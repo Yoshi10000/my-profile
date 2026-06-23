@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class=" flex flex-row gap-3 mb-5">
+        <div class="flex flex-1 border border-gray-700 bg-white rounded-xl shadow-lg gap-2 p-3">
+            <h3 class="text-4xl font-extrabold ">身長（cm）</h3>
+            <input id="Atall" type="number" placeholder="例）170" class="border border-gray-700">
+        </div>
+        <div class="flex flex-1 border border-gray-700 bg-white rounded-xl shadow-lg gap-2 p-3">
+            <h3 class="text-4xl font-extrabold ">体重（kg）</h3>
+            <input id="Aweight" type="number" placeholder="例）60" class="border border-gray-700">
+        </div>
+    </div>
+    <div class="flex justify-center items-center ">
+        <button id="Acalc" class="text-blue-800 bg-blue-200 block p-2 rounded-xl">BMIを測る</button>
+    </div>
+<p id="ABMI" class="flex justify-center items-center font-extrabold text-19xl text-blue-900"></p>
+<p id="Ajugge" class="flex justify-center items-center font-extrabold text-19xl text-blue-900"></p>
+
+
+
+
+<script>
+    const calc = document.querySelector("#Acalc"); 
+    const judgement = document.querySelector("#Ajugge");
+    const result = document.querySelector("#ABMI");
+
+    function calcBMI(tall,weight) {
+        const tallM = tall/100;
+        return weight/(tallM*tallM);
+    }
+
+    function getjudgement(bmi) {
+        if (bmi<18.5) {
+            return "やせ型";
+        } else if (bmi<25) {
+            return "普通";
+        } else {
+            return "肥満";
+        }
+    }
+
+    calc.addEventListener("click", () => {
+    const tall = Number(document.querySelector("#Atall").value);
+    const weight = Number(document.querySelector("#Aweight").value);
+
+    if (tall<=0 || weight<=0) {
+        result.textContent = "身長と体重を正しく入力してください"
+    };
+
+    const bmi = calcBMI(tall,weight);
+    const judge = getjudgement(bmi)
+
+    judgement.textContent = bmi
+    result.textContent = judge
+    });
+</script>
+</body>
+</html>
