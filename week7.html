@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-200 flex items-center justify-center min-h-screen">
+    <div class="bg-white rounded-xl block p-6">
+        <h1 class="font-bold text-xl mb-5">TODOリスト</h1>
+        <div class="flex flex-row gap-1">
+            <input id="todolist" placeholder="タスクを入力" type="text" class="rounded p-2 border border-gray-300">
+            <button id="todobutton" class="block bg-blue-600 p-2 text-white rounded mb-3">追加</button>
+        </div>
+        <ul id="todotask" class="space-y-2"></ul>
+    </div>
+</body>
+<script>
+    const list = document.querySelector("#todolist");
+    const todoBtn = document.querySelector("#todobutton");
+    const task = document.querySelector("#todotask");
+
+    todoBtn.addEventListener("click",() =>  {
+        
+        const text = list.value;
+
+        if (text === "") {
+            return;
+        }
+
+        const item = document.createElement("li");
+        item.className="flex justify-between items-center bg-gray-100 p-2";
+
+        const span = document.createElement("span");
+        span.textContent=text;
+
+        const doneBtn = document.createElement("button");
+        doneBtn.textContent = "完了";
+        doneBtn.className = "text-gray-500 text-sm hover:text-gray-800";
+
+        doneBtn.addEventListener("click",() => {
+            span.classList.toggle("line-through");
+            span.classList.toggle("text-gray-400");
+        })
+
+        item.appendChild(span);
+        item.appendChild(doneBtn);
+        task.appendChild(item);
+
+        list.value="";
+    })
+</script>
+</html>
