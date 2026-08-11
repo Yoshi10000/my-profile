@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-200 p-7">
+    <header class="flex flex-row justify-between mb-3">
+        <h1 class="font-bold text-xl text-blue-800">メンバーリスト</h1>
+        <button id="SortBtn" class="block rounded-lg p-2 bg-blue-200 text-white shadow-lg">名前順</button>
+    </header>
+
+    <div id="MemberList" class="grid grid-cols-3 p-3"></div>
+
+    <script>
+        const members=[
+            {name:"リオネルメッシ",role:"フォワード",comment:"点とります"},
+            {name:"セルヒオブスケツ",role:"アンカー",comment:"パスをつなげます"},
+            {name:"ピケ",role:"ディフェンス",comment:"ボールを奪います"},
+            {name:"ブラボ",role:"キーパー",comment:"ゴールを守ります"},
+            {name:"イニエスタ",role:"ボランチ",comment:"日本大好き！"},
+        ];
+
+        const container = document.getElementById("MemberList");
+        const sortBtn = document.getElementById("SortBtn");
+
+        function render(list) {
+            container.innerHTML="";
+
+            list.forEach(member => {
+                const card = document.createElement("div");
+                card.className = "bg-white p-4 rounded-lg shadow m-2"
+                card.innerHTML = `
+                <h2 class="font-bold text-lg">${member.name}</h2>
+                <p class="text-gray-400 text-sm">${member.role}</p>
+                <p class="text-gray-500 text-sm mt-2">${member.comment}</p>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        render(members);
+
+        sortBtn.addEventListener("click",()=>{
+            const sorted = members.slice().sort((a,b)=>{
+                return a.name.localeCompare(b.name,"ja");
+            });
+            render(sorted);
+        });
+    </script>
+</body>
+</html>
