@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ユーザー登録フォーム</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-50 flex items-center justify-center p-4 sm:p-8">
+
+  <div class="w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+    <header class="mb-6">
+      <h1 class="text-2xl font-bold text-slate-900">新規ユーザー登録</h1>
+      <p class="mt-1 text-sm text-slate-600">必要な情報を入力してアカウントを作成してください。</p>
+    </header>
+
+    <!-- 成功メッセージ表示エリア -->
+    <div id="successMessage" class="hidden mb-6 rounded-lg bg-green-50 p-4 text-sm font-medium text-green-700 border border-green-200">
+      登録完了！ご登録ありがとうございます。
+    </div>
+
+    <!-- novalidate を付与してブラウザ標準のバリデーション吹き出しを無効化 -->
+    <form id="signupForm" class="space-y-5" novalidate>
+      
+      <!-- お名前 -->
+      <div>
+        <label for="name" class="mb-1 block text-sm font-medium text-slate-700">
+          お名前 <span class="text-xs text-red-500">※必須</span>
+        </label>
+        <input
+          type="text"
+          id="name"
+          required
+          class="w-full rounded border border-slate-300 px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder="山田 太郎"
+        >
+        <p id="nameError" class="mt-1 text-xs font-medium text-red-500 min-h-[1rem]"></p>
+      </div>
+
+      <!-- メールアドレス -->
+      <div>
+        <label for="email" class="mb-1 block text-sm font-medium text-slate-700">
+          メールアドレス <span class="text-xs text-red-500">※必須</span>
+        </label>
+        <input
+          type="email"
+          id="email"
+          required
+          class="w-full rounded border border-slate-300 px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder="example@example.com"
+        >
+        <p id="emailError" class="mt-1 text-xs font-medium text-red-500 min-h-[1rem]"></p>
+      </div>
+
+      <!-- パスワード -->
+      <div>
+        <label for="password" class="mb-1 block text-sm font-medium text-slate-700">
+          パスワード（8文字以上） <span class="text-xs text-red-500">※必須</span>
+        </label>
+        <input
+          type="password"
+          id="password"
+          required
+          class="w-full rounded border border-slate-300 px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder="••••••••"
+        >
+        <p id="passwordError" class="mt-1 text-xs font-medium text-red-500 min-h-[1rem]"></p>
+      </div>
+
+      <!-- 利用規約同意 -->
+      <div>
+        <div class="flex items-center">
+          <input
+            type="checkbox"
+            id="terms"
+            required
+            class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-400"
+          >
+          <label for="terms" class="ml-2 text-sm text-slate-700">
+            <a href="#" class="text-blue-600 hover:underline">利用規約</a>に同意する
+          </label>
+        </div>
+        <p id="termsError" class="mt-1 text-xs font-medium text-red-500 min-h-[1rem]"></p>
+      </div>
+
+      <!-- 送信ボタン -->
+      <button
+        type="submit"
+        class="w-full rounded bg-blue-600 py-2.5 font-bold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+      >
+        アカウントを作成する
+      </button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("signupForm");
+    const successMessage = document.getElementById("successMessage");
+
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const termsInput = document.getElementById("terms");
+
+    const nameError = document.getElementById("nameError");
+    const emailError = document.getElementById("emailError");
+    const passwordError = document.getElementById("passwordError");
+    const termsError = document.getElementById("termsError");
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      // 前回の表示をリセット
+      clearErrors();
+      successMessage.classList.add("hidden");
+
+      let isValid = true;
+
+      // 1. 名前のバリデーション
+      if (nameInput.value.trim() === "") {
+        nameError.textContent = "お名前を入力してください";
+        isValid = false;
+      }
+
+      // 2. メールアドレスのバリデーション
+      if (emailInput.value.trim() === "") {
+        emailError.textContent = "メールアドレスを入力してください";
+        isValid = false;
+      }
+
+      // 3. パスワードのバリデーション
+      const passwordValue = passwordInput.value;
+      if (passwordValue === "") {
+        passwordError.textContent = "パスワードを入力してください";
+        isValid = false;
+      } else if (passwordValue.length < 8) {
+        passwordError.textContent = "パスワードは8文字以上で入力してください";
+        isValid = false;
+      }
+
+      // 4. 利用規約チェックボックスのバリデーション
+      if (!termsInput.checked) {
+        termsError.textContent = "利用規約への同意が必要です";
+        isValid = false;
+      }
+
+      // 全体バリデーション成功時
+      if (isValid) {
+        successMessage.classList.remove("hidden");
+        form.reset();
+      }
+    });
+
+    // エラーメッセージを一括クリアする関数
+    function clearErrors() {
+      nameError.textContent = "";
+      emailError.textContent = "";
+      passwordError.textContent = "";
+      termsError.textContent = "";
+    }
+  </script>
+</body>
+</html>
